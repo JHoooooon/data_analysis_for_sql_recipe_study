@@ -316,3 +316,13 @@ SELECT
     COALESCE(amount - coupon, amount) AS payment
 FROM purchase_with_coupon ;
 ```
+
+```sh
+payment|
+-------+
+   3280|
+   4150|
+   3870|
+```
+
+`COALESCE` 는 첫번째 인자가 `NULL` 이면 그다음 인자값을 반환한다
