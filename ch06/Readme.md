@@ -352,4 +352,53 @@ CROSS JOIN stats;
 ```
 
 이부분은 다시 살펴볼 내용인거 같다
-히스토그램 관련된 부분을 보고 다시 봐야 겠다..
+이 부분은 이해하려고 자바스크립트로 내용을 정리해본다
+
+- 히스토그램은 다음과 같이 나누어진다
+
+1. 계급
+2. 도수
+
+여기서 `계급` 은 `x` 축이며, 목표의 범위를 만든다
+`계급` 은 자료내의 최소, 최대 값을 찾아, `계급` 의 `구간 폭`(`급의 폭`) 을 설정한다
+
+`급의 폭` 다음과 같다
+
+```ts
+// 최대값
+const max_width = 35000;
+
+// 최소값
+const min_width = 2000;
+
+//  bin, bucket: 막대 그래프에서 x 축에서 각 막대그래프 폭(`계급`)
+// bucket_num
+const bucket_num: number = 10;
+
+//  구간폭
+// bucket_range(= bin)
+// 3300
+const bucket_range: number = Math.round((max_width - min_width) / bin_count);
+```
+
+`도수` 는 각 계급에 따른 (`범주`) 에 들어간 개수를 나타낸다
+`도수` 를 구한다
+
+```ts
+//  도수의 해당하는 계급
+//  price - min_price 에 해당하는 계급이다
+//  여기에 bucket_range 를 나누어 어느 계급에 속한지 나타낸다
+//  ex)
+//      price = 2000
+//      min_price = 2000
+//      bucket = 1
+//      price 2000 은 계급 1 에 속한다
+//
+//      price = 8000
+//      min_price = 2000
+//      bucket = 2
+//      price 8000 은 계급 2 에 속한다
+const bucket = Math.floor((price - min_price) / bucket_range) + 1;
+```
+
+이로써 `bucket`(`계급`) 을 구할수 있게 된다
