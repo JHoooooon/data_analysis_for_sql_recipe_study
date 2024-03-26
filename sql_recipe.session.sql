@@ -1,237 +1,59 @@
-drop table if exists purchase_log;
-
-CREATE TABLE purchase_log
-(
-        dt                  date
-    ,   order_id            int
-    ,   user_id             uuid
-    ,   purchase_amount     bigint
+DROP TABLE IF EXISTS mst_users;
+CREATE TABLE mst_users(
+    user_id         varchar(255)
+  , sex             varchar(255)
+  , birth_date      varchar(255)
+  , register_date   varchar(255)
+  , register_device varchar(255)
+  , withdraw_date   varchar(255)
 );
 
-INSERT INTO purchase_log
+INSERT INTO mst_users
 VALUES
-    (
-            '2014-01-01'
-        ,   1
-        ,   uuid_generate_v4()
-        ,   13900
-    ),
-    (
-            '2014-01-01'
-        ,   2
-        ,   uuid_generate_v4()
-        ,   10616
-    ),
-    (
-            '2014-01-02'
-        ,   3
-        ,   uuid_generate_v4()
-        ,   21156
-    ),
-    (
-            '2014-01-02'
-        ,   4
-        ,   uuid_generate_v4()
-        ,   14893
-    ),
-    (
-            '2014-01-03'
-        ,   5
-        ,   4uid_generate_v4()
-        ,   13054
-    ),
-    (
-            '2014-01-03'
-        ,   6
-        ,   4uid_generate_v4()
-        ,   24384
-    ),
-    (
-            '2014-01-03'
-        ,   7
-        ,   4uid_generate_v4()
-        ,   15591
-    ),
-    (
-            '2014-01-04'
-        ,   8
-        ,   uuid_generate_v4()
-        ,   3025
-    ),
-    (
-            '2014-01-04'
-        ,   9
-        ,   uuid_generate_v4()
-        ,   24215
-    ),
-    (
-            '2014-01-04'
-        ,   10
-        ,   uuid_generate_v4()
-        ,   2059
-    ),
-    (
-            '2014-01-04'
-        ,   11
-        ,   uuid_generate_v4()
-        ,   7324
-    ),
-    (
-            '2014-01-04'
-        ,   12
-        ,   uuid_generate_v4()
-        ,   9521
-    );
+    ('U001', 'M', '1977-06-17', '2016-10-01', 'pc' , NULL        )
+  , ('U002', 'F', '1953-06-12', '2016-10-01', 'sp' , '2016-10-10')
+  , ('U003', 'M', '1965-01-06', '2016-10-01', 'pc' , NULL        )
+  , ('U004', 'F', '1954-05-21', '2016-10-05', 'pc' , NULL        )
+  , ('U005', 'M', '1987-11-23', '2016-10-05', 'sp' , NULL        )
+  , ('U006', 'F', '1950-01-21', '2016-10-10', 'pc' , '2016-10-10')
+  , ('U007', 'F', '1950-07-18', '2016-10-10', 'app', NULL        )
+  , ('U008', 'F', '2006-12-09', '2016-10-10', 'sp' , NULL        )
+  , ('U009', 'M', '2004-10-23', '2016-10-15', 'pc' , NULL        )
+  , ('U010', 'F', '1987-03-18', '2016-10-16', 'pc' , NULL        )
+;
 
-SELECT * FROM purchase_log;
+DROP TABLE IF EXISTS action_log;
+CREATE TABLE action_log(
+    session  varchar(255)
+  , user_id  varchar(255)
+  , action   varchar(255)
+  , category varchar(255)
+  , products varchar(255)
+  , amount   integer
+  , stamp    varchar(255)
+);
 
-SELECT
-        dt
-    ,   count(dt) purchase_count
-    ,   sum(purchase_amount) total_amount
-    ,   round(avg(purchase_amount), 2) avg_amount
-FROM
-    purchase_log
-GROUP BY dt
-ORDER BY dt;
+INSERT INTO action_log
+VALUES
+    ('989004ea', 'U001', 'purchase', 'drama' , 'D001,D002', 2000, '2016-11-03 18:10:00')
+  , ('989004ea', 'U001', 'view'    , NULL    , NULL       , NULL, '2016-11-03 18:00:00')
+  , ('989004ea', 'U001', 'favorite', 'drama' , 'D001'     , NULL, '2016-11-03 18:00:00')
+  , ('989004ea', 'U001', 'review'  , 'drama' , 'D001'     , NULL, '2016-11-03 18:00:00')
+  , ('989004ea', 'U001', 'add_cart', 'drama' , 'D001'     , NULL, '2016-11-03 18:00:00')
+  , ('989004ea', 'U001', 'add_cart', 'drama' , 'D001'     , NULL, '2016-11-03 18:00:00')
+  , ('989004ea', 'U001', 'add_cart', 'drama' , 'D001'     , NULL, '2016-11-03 18:00:00')
+  , ('989004ea', 'U001', 'add_cart', 'drama' , 'D001'     , NULL, '2016-11-03 18:00:00')
+  , ('989004ea', 'U001', 'add_cart', 'drama' , 'D001'     , NULL, '2016-11-03 18:00:00')
+  , ('989004ea', 'U001', 'add_cart', 'drama' , 'D002'     , NULL, '2016-11-03 18:01:00')
+  , ('989004ea', 'U001', 'add_cart', 'drama' , 'D001,D002', NULL, '2016-11-03 18:02:00')
+  , ('989004ea', 'U001', 'purchase', 'drama' , 'D001,D002', 2000, '2016-11-03 18:10:00')
+  , ('47db0370', 'U002', 'add_cart', 'drama' , 'D001'     , NULL, '2016-11-03 19:00:00')
+  , ('47db0370', 'U002', 'purchase', 'drama' , 'D001'     , 1000, '2016-11-03 20:00:00')
+  , ('47db0370', 'U002', 'add_cart', 'drama' , 'D002'     , NULL, '2016-11-03 20:30:00')
+  , ('87b5725f', 'U001', 'add_cart', 'action', 'A004'     , NULL, '2016-11-04 12:00:00')
+  , ('87b5725f', 'U001', 'add_cart', 'action', 'A005'     , NULL, '2016-11-04 12:00:00')
+  , ('87b5725f', 'U001', 'add_cart', 'action', 'A006'     , NULL, '2016-11-04 12:00:00')
+  , ('9afaf87c', 'U002', 'purchase', 'drama' , 'D002'     , 1000, '2016-11-04 13:00:00')
+  , ('9afaf87c', 'U001', 'purchase', 'action', 'A005,A006', 1000, '2016-11-04 15:00:00')
+;
 
-SELECT
-        dt
-    ,   sum(purchase_amount) total_amount
-    ,   round(avg(purchase_amount) OVER (ORDER BY dt ROWS BETWEEN 6 PRECEDING AND CURRENT ROW), 2) sevent_days_avg
-FROM
-    purchase_log
-GROUP BY dt;
-
-SELECT
-        dt
-    ,   sum(purchase_amount) OVER (
-            PARTITION BY substring(dt, 1, 7)
-            ORDER BY dt
-            ROWS BETWEEN
-                UNBOUNDED PRECEDING 
-        )
-FROM
-    purchase_log;
-
-
-WITH
-    daily_purchase AS (
-        SELECT
-                dt
-            ,   SUBSTRING(dt, 1, 4) year
-            ,   SUBSTRING(dt, 6, 2) month
-            ,   SUBSTRING(dt, 9, 2) day
-            ,   sum(purchase_amount) total_amount
-        FROM
-            purchase_log
-        GROUP BY dt
-    )
-SELECT
-    *
-FROM
-    daily_purchase;
-
-SELECT 
-    SUBSTRING(dt, 1, 7) year_month,
-    sum(purchase_amount) total_amount
-FROM
-    purchase_log
-GROUP BY SUBSTRING(dt, 1, 7);
-
-SELECT * from purchase_log;
-
-WITH
-    daily_purchase as (
-        SELECT
-                dt
-            ,   substring(dt, 1, 4) "year"
-            ,   substring(dt, 6, 2) "month"
-            ,   substring(dt, 9, 2) "day"
-            ,   sum(purchase_amount) "total_amount"
-        FROM
-            purchase_log
-        GROUP BY dt
-    )
-SELECT
-        month
-    ,   sum(
-            CASE
-                WHEN year = '2014' THEN total_amount
-            END
-        ) "2014"
-    ,   sum(
-            CASE
-                WHEN year = '2015' THEN total_amount
-            END
-        ) "2015"
-    ,   round(100.0 *
-        sum(
-            CASE
-                WHEN year = '2015' THEN total_amount
-            END
-        ) /
-        sum(
-            CASE
-                WHEN year = '2014' THEN total_amount
-            END
-        ), 2) || '%' rate
-FROM
-    daily_purchase
-group by month
-ORDER BY month;
-
-WITH
-    daily_purchase AS (
-        SELECT
-                SUBSTRING(dt, 1, 4) "year"
-            ,   SUBSTRING(dt, 6, 2) "month"
-            ,   SUBSTRING(dt, 9, 2) "date"
-            ,   sum(purchase_amount) "total_amount"
-        FROM
-            purchase_log
-        GROUP BY dt
-    ),
-    monthly_purchase AS (
-        SELECT
-            year,
-            month,
-            sum(total_amount) year_month_amount
-        FROM
-            daily_purchase
-        GROUP BY
-            year, month
-    )
-    calc_index AS (
-        SELECT
-                year || '-' || month "year_mount"
-            ,   year_month_amount
-            ,   sum(
-                    CASE
-                        WHEN year = '2015' THEN year_month_amount
-                    END
-                ) OVER (
-                    ORDER BY year, month
-                    ROWS
-                        UNBOUNDED PRECEDING
-                ) "agg_month_amount"
-            ,   sum(
-                    CASE
-                        WHEN year = '2015' THEN year_month_amount
-                    END
-                ) OVER (
-                    ORDER BY year, month
-                    ROWS BETWEEN
-                        11 PRECEDING AND CURRENT ROW
-                ) "year_avt_amount"
-        FROM
-            monthly_purchase
-        ORDER BY
-            year, month
-    )
-    SELECT
-        *
-    FROM
-        calc_index
-    WHERE
-        year = '2015';
